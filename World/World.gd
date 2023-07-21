@@ -13,7 +13,6 @@ func _ready():
 	load_planet_textures()
 	generate_planets()
 	
-	
 func load_planet_textures():
 	for i in range(NUM_PLANET_TEXTURES):
 		# res://Assets/kenney_planets/Planets/planet00.png etc.

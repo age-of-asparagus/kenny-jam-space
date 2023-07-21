@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://World/World.gd" type="Script" id=1]
 [ext_resource path="res://World/Starfield.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player/space_ship.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HUD/HUD.tscn" type="PackedScene" id=4]
+[ext_resource path="res://World/Planet.tscn" type="PackedScene" id=5]
 
 [node name="Galaxy" type="Node2D"]
 script = ExtResource( 1 )
@@ -50,3 +51,6 @@ current = true
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 4 )]
+
+[node name="Planet" parent="." instance=ExtResource( 5 )]
+position = Vector2( 472, 272 )
