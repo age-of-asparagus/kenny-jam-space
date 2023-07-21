@@ -1,0 +1,19 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Assets/kenney_space-shooter-redux/PNG/Effects/star1.png" type="Texture" id=1]
+
+[sub_resource type="Curve" id=1]
+_data = [ Vector2( 0, 0 ), 0.0, 0.0, 0, 0, Vector2( 0.246201, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.50152, 0.588636 ), 0.0, 0.0, 0, 0, Vector2( 0.744681, 1 ), 0.0, 0.0, 0, 0, Vector2( 1, 0 ), 0.0, 0.0, 0, 0 ]
+
+[node name="Starfield" type="CPUParticles2D"]
+position = Vector2( 512, 300 )
+amount = 10
+lifetime = 6.0
+preprocess = 6.0
+texture = ExtResource( 1 )
+emission_shape = 2
+emission_rect_extents = Vector2( 512, 300 )
+gravity = Vector2( 0, 0 )
+scale_amount = 0.5
+scale_amount_random = 0.5
+scale_amount_curve = SubResource( 1 )
