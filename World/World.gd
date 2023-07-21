@@ -15,7 +15,7 @@ func _ready():
 	
 func _process(delta):
 	if Input.is_action_pressed("ui_accept"):
-		$CanvasLayer/HUD.update_fuel(-0.01)
+		Global.fuel -= 0.01
 	
 func load_planet_textures():
 	for i in range(NUM_PLANET_TEXTURES):
