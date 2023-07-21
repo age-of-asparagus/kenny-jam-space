@@ -1,5 +1,6 @@
 extends KinematicBody2D
 
+var boost = 1
 #var gliding_direction = 0
 #var rotate_left = false
 #var rotate_right = false
@@ -19,10 +20,18 @@ export var rotation_speed = 0.05
 
 func _physics_process(delta):
 	
-	if Input.is_action_pressed("ui_accept"):
+	if Input.is_action_just_pressed("boost") and not boost == 10:
+		boost = 10
+		$boost_timer.start()
+	
+	if Input.is_action_pressed("move"):
 		# Accelerating in direction of sprite
 		# I used this recipe: https://kidscancode.org/godot_recipes/3.x/2d/topdown_movement/#option-2-rotate-and-move
-		# then test +/- and x/y untill went in same direction as sprite =)
+		# then test +/- and x/y untill went in same direction as sprite =
+		if not boost == 10:
+			Global.fuel -= 0.01
+		else:
+			Global.fuel -= 0.03
 		velocity += -transform.y * acceleration
 		$Sprite/Fire.visible = true
 	else:
@@ -32,10 +41,10 @@ func _physics_process(delta):
 		
 	
 	# This gets both at same time and lets them cancel each other out
-	var rotation_dir = Input.get_axis("ui_left", "ui_right")
+	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
 	rotate(rotation_dir * rotation_speed)
 	
-	move_and_slide(velocity)
+	move_and_slide(velocity * boost)
 	
 	print("Speed: ", int(velocity.length()))
 	
@@ -76,3 +85,7 @@ func _physics_process(delta):
 #	rotate_left = false
 	
 	
+
+
+func _on_boost_timer_timeout():
+	boost = 1
