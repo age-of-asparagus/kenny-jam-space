@@ -16,12 +16,12 @@ func _physics_process(delta):
 	
 	print(gliding_direction)
 	
-	if Input.is_action_pressed("move_forward"):
+	if Input.is_action_pressed("ui_accept"):
 		moving = true
-	if Input.is_action_pressed("turn_left"):
+	if Input.is_action_pressed("ui_left"):
 		rotate_left = true
 	
-	if Input.is_action_pressed("turn_right"):
+	if Input.is_action_pressed("ui_right"):
 		rotate_right = true
 	
 	global_rotation_degrees += rotate_speed_left + rotate_speed_right
