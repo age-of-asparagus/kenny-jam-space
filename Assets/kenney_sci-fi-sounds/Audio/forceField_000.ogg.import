@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/forceField_000.ogg-3762562e12348d278756a9b93cb18d39.oggstr"
+
+[deps]
+
+source_file="res://Assets/kenney_sci-fi-sounds/Audio/forceField_000.ogg"
+dest_files=[ "res://.import/forceField_000.ogg-3762562e12348d278756a9b93cb18d39.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/engineCircular_003.ogg-5f455e40027a2883837afe114cf9f3b4.oggstr"
+
+[deps]
+
+source_file="res://Assets/kenney_sci-fi-sounds/Audio/engineCircular_003.ogg"
+dest_files=[ "res://.import/engineCircular_003.ogg-5f455e40027a2883837afe114cf9f3b4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sfx_zap.ogg-440993a913ed8f45b56e04a593f8901f.oggstr"
+
+[deps]
+
+source_file="res://Assets/kenney_space-shooter-redux/Bonus/sfx_zap.ogg"
+dest_files=[ "res://.import/sfx_zap.ogg-440993a913ed8f45b56e04a593f8901f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
