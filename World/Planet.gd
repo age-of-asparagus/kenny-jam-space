@@ -1,23 +1,12 @@
 extends Area2D
 
+signal too_fast
 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
-
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
-
 
 func _on_ProximitySensor_body_entered(body):
 	if body.velocity.length() < 100:
 		print("PLANET CAPTURED!")
 	else:
-		print("TOO FAST, MIGHT CRASH")
+		emit_signal("too_fast")

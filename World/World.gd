@@ -1,7 +1,8 @@
 extends Node2D
 
-export var galaxy_size := 1000
-export var planet_density := 0.02
+export var sectors := 10
+export var sector_size := 2048
+export var planet_density := 0.5  # probability of generating a planet in that sector
 
 var Planet : PackedScene = preload("res://World/Planet.tscn")
 
@@ -19,4 +20,18 @@ func load_planet_textures():
 		planet_textures.append(PLANET_PATH + str(i) + ".png")
 	
 func generate_planets():
-	pass
+	# place a planet randomly within each "sector" where a sector.
+	var top_left = -sectors * sector_size / 2
+#	var origin = Vector2(top_left, top_left)
+	for x in range(sectors):
+		for y in range(sectors):
+			if randf() < planet_density:
+				var planet : Node2D = Planet.instance()
+				# a random location within the sector
+				planet.global_position = Vector2(
+					randi()%sector_size + x*sector_size + top_left,
+					randi()%sector_size + y*sector_size + top_left
+				)
+				print (planet.position)
+				add_child(planet)
+			
