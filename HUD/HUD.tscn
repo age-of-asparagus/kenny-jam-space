@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/squareWhite.png" type="Texture" id=1]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/squareBlue.png" type="Texture" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/dotRed.png" type="Texture" id=7]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/dotGreen.png" type="Texture" id=8]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/Fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=9]
-[ext_resource path="res://Assets/kenney_sci-fi-sounds/Audio/forceField_000.ogg" type="AudioStream" id=10]
 
 [sub_resource type="DynamicFont" id=1]
 size = 30
@@ -29,7 +28,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.25, 0.5, 0.75, 1 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Color( 1, 0, 0, 1 ), Color( 1, 0, 0, 0 ), Color( 1, 0, 0, 1 ), Color( 1, 0, 0, 0 ), Color( 1, 0, 0, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "audio"
 tracks/1/path = NodePath("AudioStreamPlayer")
@@ -78,7 +77,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 0,
-"values": [ Color( 1, 0, 0, 1 ) ]
+"values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("AudioStreamPlayer:playing")
@@ -408,14 +407,12 @@ custom_constants/margin_bottom = 10
 
 [node name="WarningLabel" type="Label" parent="WarningContainer"]
 visible = false
-modulate = Color( 1, 0, 0, 1 )
 margin_left = 10.0
-margin_top = 10.0
+margin_top = 29.0
 margin_right = 285.0
-margin_bottom = 83.0
+margin_bottom = 64.0
 custom_fonts/font = SubResource( 1 )
-text = "PROXIMITY ALERT
-TOO FAST"
+text = "WANRING HERE"
 align = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="WarningContainer/WarningLabel"]
@@ -423,4 +420,3 @@ anims/Flash = SubResource( 2 )
 anims/RESET = SubResource( 3 )
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="WarningContainer/WarningLabel"]
-stream = ExtResource( 10 )

@@ -12,6 +12,10 @@ onready var minimap = $MarginContainer/NinePatchRect/Minimap/
 onready var player_marker = $MarginContainer/NinePatchRect/Minimap/PlayerMarker
 onready var planet_marker = $MarginContainer/NinePatchRect/Minimap/DotGreen
 
+export var danger_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/forceField_000.ogg")
+export var discovery_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/laserRetro_003.ogg")
+export var colonized_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/slime_001.ogg")
+
 var zoom = 5
 var map_scale
 var markers = {}
@@ -44,7 +48,10 @@ func _process(change):
 		return
 		
 	# Update speed
-	$Label.text = str(int(player_node.velocity.length())) + " km/s"
+	var speed = player_node.velocity.length()
+	$Label.text = str(int(speed)) + " km/s"
+#	if speed < 40:
+#		stop_warning()
 	
 	# Update minimap
 	player_marker.rotation = player_node.rotation
@@ -78,18 +85,46 @@ func initialize_HUD():
 	for planet in get_tree().get_nodes_in_group("planets"):
 		planet.connect("proximity", self, "_on_Planet_proximity")
 		planet.connect("proximity_exited", self, "_on_Planet_proximity_exited")
+		planet.connect("colonized", self, "_on_Planet_colonized")
 		
 		
 func _on_Planet_proximity(planet):
-	display_warning()
+	var player_node = get_node(player)
+	if player_node.velocity.length() > 40:
+		display_warning()
+	else: 
+		display_discovery()
 
 func _on_Planet_proximity_exited(planet):
 	stop_warning()
-		
+	
+func _on_Planet_colonized(planet):
+	planet.disconnect("proximity", self, "_on_Planet_proximity")
+	planet.disconnect("proximity_exited", self, "_on_Planet_proximity_exited")
+	planet.disconnect("colonized", self, "_on_Planet_colonized")
+	display_colonized()
+	# wait a second before ending animation
+	yield(get_tree().create_timer(1.0), "timeout")
+	stop_warning()
+
+func display_colonized():
+	$WarningContainer/WarningLabel.text = "PLANET COLONIZED"
+	$WarningContainer.modulate = Color("00ff00")
+	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = colonized_sound
+	warning_label_player.play("Flash")  # Danger proximity
 		
 func display_warning():
-	warning_label_player.play("Flash")
+	$WarningContainer/WarningLabel.text = "PROXIMITY ALERT\nTOO FAST"
+	$WarningContainer.modulate = Color("ff0000")
+	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = danger_sound
+	warning_label_player.play("Flash")  # Danger proximity
 	
 func stop_warning():
 	warning_label_player.play("RESET")
+	
+func display_discovery():
+	$WarningContainer/WarningLabel.text = "SEFELY APPROCHING PLANET"
+	$WarningContainer.modulate = Color("00ffff")
+	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = discovery_sound
+	warning_label_player.play("Flash")
 		
