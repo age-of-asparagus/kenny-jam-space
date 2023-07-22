@@ -33,7 +33,11 @@ func _process(change):
 	if !player:
 		return
 		
-	player_marker.rotation = get_node(player).rotation
+	var player_node = get_node(player)
+	
+	$Label.text = str(int(player_node.velocity.length())) + " km/s"
+	
+	player_marker.rotation = player_node.rotation
 	
 	for item in markers:
 		var obj_pos = (item.position - get_node(player).position) * map_scale + minimap.rect_size / 2

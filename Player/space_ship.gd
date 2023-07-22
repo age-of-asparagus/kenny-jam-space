@@ -46,7 +46,7 @@ func _physics_process(delta):
 	
 	move_and_slide(velocity * boost)
 	
-	print("Speed: ", int(velocity.length()))
+#	print("Speed: ", int(velocity.length()))
 	
 		
 #	if Input.is_action_pressed("ui_left"):

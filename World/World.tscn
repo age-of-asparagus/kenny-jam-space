@@ -55,5 +55,5 @@ current = true
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 4 )]
 player = NodePath("../../space_ship")
 
-[node name="Planet" parent="." groups=["minimap_objects"] instance=ExtResource( 5 )]
+[node name="Planet" parent="." instance=ExtResource( 5 )]
 position = Vector2( 472, 272 )
