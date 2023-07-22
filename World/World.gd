@@ -34,4 +34,5 @@ func generate_planets():
 				)
 				print (planet.position)
 				add_child(planet)
-			
+				
+	$CanvasLayer/HUD.update_mini_map()

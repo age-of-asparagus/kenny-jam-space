@@ -8,6 +8,7 @@
 
 [node name="Galaxy" type="Node2D"]
 script = ExtResource( 1 )
+sectors = 5
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="."]
 
@@ -44,6 +45,7 @@ amount = 6
 scale_amount = 0.9
 
 [node name="space_ship" parent="." instance=ExtResource( 3 )]
+z_index = 1
 
 [node name="Camera2D" type="Camera2D" parent="space_ship"]
 current = true
@@ -51,6 +53,7 @@ current = true
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="HUD" parent="CanvasLayer" instance=ExtResource( 4 )]
+player = NodePath("../../space_ship")
 
-[node name="Planet" parent="." instance=ExtResource( 5 )]
+[node name="Planet" parent="." groups=["minimap_objects"] instance=ExtResource( 5 )]
 position = Vector2( 472, 272 )
