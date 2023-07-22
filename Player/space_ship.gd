@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 var boost_vector : Vector2
-var boost = 1000
+var boost = 50
 var boosting = false
 
 
@@ -21,7 +21,6 @@ func _physics_process(delta):
 		$AnimationPlayer.play("boost")
 		boosting = true
 		Global.boosts_available -= 1
-		velocity += -transform.y * boost
 		boost_vector = -transform.y
 		$AudioStreamPlayer.stream_paused = false
 		$boost_timer.start()
@@ -32,13 +31,15 @@ func _physics_process(delta):
 		velocity += -transform.y * acceleration
 		$AudioStreamPlayer.stream_paused = false
 		$Sprite/Fire.play("moving")
-		$Sprite/Fire.scale = Vector2(1,1)
-	elif boosting:
 		$Sprite/Fire.scale = Vector2(1.5,1.5)
-		$Sprite/Fire.play("boosting")
+	elif boosting:
 		Global.fuel -= 0.03
+		velocity += -transform.y * acceleration * boost
+		$Sprite/Fire.scale = Vector2(2,2)
+		$Sprite/Fire.play("boosting")
+
 	else:
-		$Sprite/Fire.scale = Vector2(1,1)
+		$Sprite/Fire.scale = Vector2(1.5,1.5)
 		$Sprite/Fire.play("idle")
 		$AudioStreamPlayer.stream_paused = true
 		
@@ -48,8 +49,7 @@ func _physics_process(delta):
 	
 	
 	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
-	if not boosting:
-		rotate(rotation_dir * rotation_speed)
+	rotate(rotation_dir * rotation_speed)
 	
 	move_and_slide(velocity)
 
@@ -57,4 +57,3 @@ func _physics_process(delta):
 
 func _on_boost_timer_timeout():
 	boosting = false
-	velocity -= boost_vector * boost 
