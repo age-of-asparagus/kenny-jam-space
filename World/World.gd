@@ -10,6 +10,7 @@ const PLANET_PATH = "res://Assets/kenney_planets/Planets/planet0"  # + #.png
 const NUM_PLANET_TEXTURES = 10
 var planet_textures = []
 
+
 func _ready():
 	load_planet_textures()
 	generate_planets()
@@ -26,13 +27,13 @@ func generate_planets():
 	for x in range(sectors):
 		for y in range(sectors):
 			if randf() < planet_density:
-				var planet : Node2D = Planet.instance()
+				var planet : Planet = Planet.instance()
 				# a random location within the sector
 				planet.global_position = Vector2(
 					randi()%sector_size + x*sector_size + top_left,
 					randi()%sector_size + y*sector_size + top_left
 				)
-				print (planet.position)
 				add_child(planet)
 				
-	$CanvasLayer/HUD.update_mini_map()
+	# genreate the mini map and other stuff the HUD does once planets are created
+	$CanvasLayer/HUD.initialize_HUD()

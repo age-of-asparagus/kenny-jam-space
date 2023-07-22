@@ -49,6 +49,7 @@ z_index = 1
 
 [node name="Camera2D" type="Camera2D" parent="space_ship"]
 current = true
+smoothing_speed = 10.0
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -57,3 +58,5 @@ player = NodePath("../../space_ship")
 
 [node name="Planet" parent="." instance=ExtResource( 5 )]
 position = Vector2( 472, 272 )
+
+[connection signal="proximity" from="Planet" to="." method="_on_Planet_proximity"]
