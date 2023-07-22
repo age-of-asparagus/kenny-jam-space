@@ -38,7 +38,7 @@ func _process(change):
 	fuel_bar.value = Global.fuel
 	for i in booster_bar.get_child_count():
 		var icon : TextureRect = booster_bar.get_child(i)
-		icon.visible = (Global.warps_available > i)
+		icon.visible = (Global.boosts_available > i)
 		
 	# Update Minimap
 	if !player:

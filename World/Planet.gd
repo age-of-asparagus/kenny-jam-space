@@ -27,7 +27,7 @@ func _on_Planet_body_entered(body: PhysicsBody2D):
 		if body.velocity.length() < 40:
 			$Sprite.texture = colonized_planet
 			Global.fuel = min(Global.fuel + 10, Global.max_fuel)
-			Global.warps_available += 1
+			Global.boosts_available += 1
 			colonized = true
 			$Satellites.visible = true
 			emit_signal("colonized", self)

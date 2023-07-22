@@ -1,91 +1,60 @@
 extends KinematicBody2D
 
-var boost = 1
-#var gliding_direction = 0
-#var rotate_left = false
-#var rotate_right = false
-#var speed = 60
-#var acceleration_speed = 1.03
-#var decceleration_speed = 0.995
-#var rotate_decceleration = 0.992
-#var rotate_acceleration = 1.03
-#var moving = false
-#var rotate_speed_right = 0.6
-#var rotate_speed_left = -0.6
+var boost_vector : Vector2
+var boost = 1000
+var boosting = false
 
-var velocity := Vector2.ZERO  # stores the current speed and direction
-export var acceleration = 0.5  # how much speed to add each frame
+
+var velocity := Vector2.ZERO  
+export var acceleration = 0.5  
 export var rotation_speed = 0.05
-#var sprite_rotation_offset = Math.PI
+
+
+func _ready():
+	$AudioStreamPlayer.playing = true
+
 
 func _physics_process(delta):
 	
-	if Input.is_action_just_pressed("boost") and not boost == 10:
-		boost = 10
+	
+	if Input.is_action_just_pressed("boost") and not boosting and Global.boosts_available > 0:
+		$AnimationPlayer.play("boost")
+		boosting = true
+		Global.boosts_available -= 1
+		velocity += -transform.y * boost
+		boost_vector = -transform.y
+		$AudioStreamPlayer.stream_paused = false
 		$boost_timer.start()
+
 	
-	if Input.is_action_pressed("move"):
-		# Accelerating in direction of sprite
-		# I used this recipe: https://kidscancode.org/godot_recipes/3.x/2d/topdown_movement/#option-2-rotate-and-move
-		# then test +/- and x/y untill went in same direction as sprite =
-		if not boost == 10:
-			Global.fuel -= 0.01
-		else:
-			Global.fuel -= 0.03
+	if Input.is_action_pressed("move") and not boosting:
+		Global.fuel -= 0.01
 		velocity += -transform.y * acceleration
-		$Sprite/Fire.visible = true
+		$AudioStreamPlayer.stream_paused = false
+		$Sprite/Fire.play("moving")
+		$Sprite/Fire.scale = Vector2(1,1)
+	elif boosting:
+		$Sprite/Fire.scale = Vector2(1.5,1.5)
+		$Sprite/Fire.play("boosting")
+		Global.fuel -= 0.03
 	else:
-		$Sprite/Fire.visible = false
+		$Sprite/Fire.scale = Vector2(1,1)
+		$Sprite/Fire.play("idle")
+		$AudioStreamPlayer.stream_paused = true
+		
 		
 	
-		
 	
-	# This gets both at same time and lets them cancel each other out
+	
+	
 	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
-	rotate(rotation_dir * rotation_speed)
+	if not boosting:
+		rotate(rotation_dir * rotation_speed)
 	
-	move_and_slide(velocity * boost)
-	
-#	print("Speed: ", int(velocity.length()))
-	
-		
-#	if Input.is_action_pressed("ui_left"):
-#		rotate_left = true
-#
-#	if Input.is_action_pressed("ui_right"):
-#		rotate_right = true
-	
-#	global_rotation_degrees += rotate_speed_left + rotate_speed_right
-	
-#	if rotate_right:
-#		if rotate_speed_right < 4:
-#			rotate_speed_right *= rotate_acceleration
-#	elif rotate_speed_right > 0.6:
-#		rotate_speed_right *= rotate_decceleration
-#
-#	if rotate_left:
-#		if rotate_speed_left > -4:
-#			rotate_speed_left *= rotate_acceleration
-#	elif rotate_speed_left < -0.6:
-#		rotate_speed_left *= rotate_decceleration
-	
-	
-	
-#	if moving:
-#		gliding_direction = global_rotation
-#		move_and_slide(Vector2(speed - 60,0).rotated(rotation))
-#		if speed < 480:
-#			speed *= acceleration_speed
-#	elif speed > 60:
-#		move_and_slide(Vector2(speed - 60,0).rotated(gliding_direction))
-#		speed *= decceleration_speed
-	
-#	moving = false
-#	rotate_right = false
-#	rotate_left = false
-	
-	
+	move_and_slide(velocity)
+
 
 
 func _on_boost_timer_timeout():
-	boost = 1
+	boosting = false
+	velocity -= boost_vector * boost 
