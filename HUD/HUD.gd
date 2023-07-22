@@ -10,7 +10,8 @@ onready var warning_label_player = $WarningContainer/WarningLabel/AnimationPlaye
 
 onready var minimap = $MarginContainer/NinePatchRect/Minimap/
 onready var player_marker = $MarginContainer/NinePatchRect/Minimap/PlayerMarker
-onready var planet_marker = $MarginContainer/NinePatchRect/Minimap/DotGreen
+onready var colonized_planet_marker = $MarginContainer/NinePatchRect/Minimap/DotGreen
+onready var unknown_planet_marker = $MarginContainer/NinePatchRect/Minimap/DotRed
 
 export var danger_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/forceField_000.ogg")
 export var discovery_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/laserRetro_003.ogg")
@@ -60,6 +61,8 @@ func _process(change):
 		var obj_pos = (item.position - get_node(player).position) * map_scale + minimap.rect_size / 2
 
 		if minimap.get_rect().has_point(obj_pos):
+			if item.is_in_group("colonized"):
+				markers[item].modulate = Color("00ff88")
 			markers[item].show()
 		else:
 			markers[item].hide()
@@ -74,9 +77,9 @@ func initialize_HUD():
 	# Init minimap with planets and player
 	markers = {}
 	var map_objects := get_tree().get_nodes_in_group("minimap_objects")
-	print(map_objects.size())
+	var new_marker
 	for item in map_objects:
-		var new_marker = planet_marker.duplicate()
+		new_marker = unknown_planet_marker.duplicate()
 		minimap.add_child(new_marker)
 		new_marker.show()
 		markers[item] = new_marker
@@ -86,7 +89,6 @@ func initialize_HUD():
 		planet.connect("proximity", self, "_on_Planet_proximity")
 		planet.connect("proximity_exited", self, "_on_Planet_proximity_exited")
 		planet.connect("colonized", self, "_on_Planet_colonized")
-		
 		
 func _on_Planet_proximity(planet):
 	var player_node = get_node(player)
@@ -106,6 +108,7 @@ func _on_Planet_colonized(planet):
 	# wait a second before ending animation
 	yield(get_tree().create_timer(1.0), "timeout")
 	stop_warning()
+	planet.add_to_group("colonized")
 
 func display_colonized():
 	$WarningContainer/WarningLabel.text = "PLANET COLONIZED"

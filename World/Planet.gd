@@ -22,7 +22,6 @@ func _on_ProximitySensor_body_entered(body):
 func _on_ProximitySensor_body_exited(body):
 	emit_signal("proximity_exited", self)
 
-
 func _on_Planet_body_entered(body: PhysicsBody2D):
 	if not colonized:
 		if body.velocity.length() < 40:
