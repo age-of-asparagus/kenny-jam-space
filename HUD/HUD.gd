@@ -25,6 +25,8 @@ var planets = []
 
 var proximity_object : Node2D
 
+var discovering = false
+
 signal reset_game
 
 # Called when the node enters the scene tree for the first time.
@@ -38,6 +40,13 @@ func _ready():
 	
 	player_marker.position = minimap.rect_size / 2
 	map_scale = minimap.rect_size / (get_viewport_rect().size * zoom)
+	
+	$WarningSound.playing = true
+	$ColonizeSound.playing = true
+#	$DiscoverSound.playing = true  # Doesn't repeat
+	$WarningSound.stream_paused = true
+	$ColonizeSound.stream_paused = true
+#	$DiscoverSound.stream_paused = true
 
 func _process(change):
 	
@@ -50,6 +59,7 @@ func _process(change):
 	# out of fuel?
 	if Global.fuel <= 0:
 		display_message("GAME OVER\nYOU RAN OUT OF FUEL", -1)
+		game_over()
 		
 	# Update Minimap
 	if !player:
@@ -58,6 +68,13 @@ func _process(change):
 	
 	if !player_node:  # just in case player is queue_freed
 		return
+		
+	# Update proximity warnings:
+	if proximity_object:
+		if player_node.velocity.length() > 40:
+			display_warning()
+		else: 
+			display_discovery()
 		
 	# Update speed
 	var speed = player_node.velocity.length()
@@ -106,13 +123,10 @@ func initialize_HUD():
 		planet.connect("game_over", self, "on_Planet_game_over")
 		
 func _on_Planet_proximity(planet):
-	var player_node = get_node(player)
-	if player_node.velocity.length() > 40:
-		display_warning()
-	else: 
-		display_discovery()
+	proximity_object = planet
 
 func _on_Planet_proximity_exited(planet):
+	proximity_object = null
 	stop_warning()
 	
 func _on_Planet_colonized(planet):
@@ -134,23 +148,37 @@ func on_Planet_game_over():
 func display_colonized():
 	$WarningContainer/WarningLabel.text = "PLANET COLONIZED"
 	$WarningContainer.modulate = Color("00ff00")
-	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = colonized_sound
 	warning_label_player.play("Flash")  # Danger proximity
-		
+	discovering = false
+	#play for only 1 second
+	$WarningSound.stream_paused = true
+	$ColonizeSound.stream_paused = false
+	yield(get_tree().create_timer(1.0), "timeout")
+	$ColonizeSound.stream_paused = true	
+
 func display_warning():
 	$WarningContainer/WarningLabel.text = "PROXIMITY ALERT\nTOO FAST"
 	$WarningContainer.modulate = Color("ff0000")
-	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = danger_sound
 	warning_label_player.play("Flash")  # Danger proximity
+	$WarningSound.stream_paused = false
+	discovering = false
 	
 func stop_warning():
 	warning_label_player.play("RESET")
+	$WarningSound.stream_paused = true
+	discovering = false
 	
 func display_discovery():
 	$WarningContainer/WarningLabel.text = "SEFELY APPROCHING PLANET"
 	$WarningContainer.modulate = Color("00ffff")
-	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = discovery_sound
+	
 	warning_label_player.play("Flash")
+	$WarningSound.stream_paused = true
+	
+	if not discovering:
+		$DiscoverSound.play()
+		discovering = true
+	
 
 	
 func display_message(message: String, seconds: float):

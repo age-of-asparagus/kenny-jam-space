@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/squareWhite.png" type="Texture" id=1]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/squareBlue.png" type="Texture" id=2]
@@ -11,6 +11,9 @@
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/Fonts/kenvector_future_thin.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/PNG/glassPanel_corners.png" type="Texture" id=10]
 [ext_resource path="res://Assets/kenney_ui-pack-space-expansion/Fonts/kenvector_future.ttf" type="DynamicFontData" id=11]
+[ext_resource path="res://Assets/kenney_sci-fi-sounds/Audio/computerNoise_000.ogg" type="AudioStream" id=12]
+[ext_resource path="res://Assets/kenney_sci-fi-sounds/Audio/forceField_000.ogg" type="AudioStream" id=13]
+[ext_resource path="res://Assets/kenney_sci-fi-sounds/Audio/laserRetro_003.ogg" type="AudioStream" id=14]
 
 [sub_resource type="Theme" id=4]
 
@@ -41,35 +44,13 @@ tracks/0/keys = {
 "update": 0,
 "values": [ Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
-tracks/1/type = "audio"
-tracks/1/path = NodePath("AudioStreamPlayer")
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:visible")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"clips": [  ],
-"times": PoolRealArray(  )
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("AudioStreamPlayer:playing")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 1, 1 ),
-"update": 1,
-"values": [ true, false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath(".:visible")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
 "times": PoolRealArray( 0 ),
 "transitions": PoolRealArray( 1 ),
 "update": 1,
@@ -91,7 +72,7 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
 tracks/1/type = "value"
-tracks/1/path = NodePath("AudioStreamPlayer:playing")
+tracks/1/path = NodePath("../../WarningSound:playing")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/imported = false
@@ -449,8 +430,6 @@ align = 1
 anims/Flash = SubResource( 2 )
 anims/RESET = SubResource( 3 )
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="WarningContainer/WarningLabel"]
-
 [node name="MessageContainer" type="MarginContainer" parent="."]
 anchor_left = 0.5
 anchor_top = 0.899
@@ -510,5 +489,16 @@ custom_fonts/font = SubResource( 8 )
 text = "TRY AGAIN"
 align = 1
 valign = 1
+
+[node name="WarningSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 13 )
+volume_db = -5.0
+
+[node name="ColonizeSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 12 )
+volume_db = -10.0
+
+[node name="DiscoverSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 14 )
 
 [connection signal="button_down" from="RetryButton" to="." method="_on_RetryButton_button_down"]
