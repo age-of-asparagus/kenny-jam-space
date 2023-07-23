@@ -4,10 +4,10 @@ var boost_vector : Vector2
 var boost = 50
 var boosting = false
 
-
+var rotate_acceleration = 0.0005
 var velocity := Vector2.ZERO  
 export var acceleration = 0.5  
-export var rotation_speed = 0.05
+export var rotation_speed = 0
 
 
 func _ready():
@@ -28,13 +28,13 @@ func _physics_process(delta):
 
 	
 	if Input.is_action_pressed("move") and not boosting and Global.fuel > 0:
-		Global.fuel -= 0.01
+		Global.fuel -= 0.015
 		velocity += -transform.y * acceleration
 		$Move_sound.stream_paused = false
 		$Sprite/Fire.play("moving")
 		$Sprite/Fire.scale = Vector2(1.5,1.5)
 	elif boosting:
-		Global.fuel -= 0.05
+		Global.fuel -= 0.08
 		velocity += -transform.y * acceleration * boost
 		$Sprite/Fire.scale = Vector2(2,2)
 		$Sprite/Fire.play("boosting")
@@ -47,11 +47,15 @@ func _physics_process(delta):
 	
 	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
 	
-	if rotation_dir > 0:
+	if rotation_dir > 0 and Global.fuel > 0:
+		Global.fuel -= 0.002
+		rotation_speed += rotate_acceleration
 		$Right_booster.play("idle")
 		$Left_booster.play("boost")
 		$Rotate_sound.stream_paused = false
-	elif rotation_dir < 0:
+	elif rotation_dir < 0 and Global.fuel > 1:
+		Global.fuel -= 0.002
+		rotation_speed -= rotate_acceleration
 		$Rotate_sound.stream_paused = false
 		$Left_booster.play("idle")
 		$Right_booster.play("boost")
@@ -59,7 +63,7 @@ func _physics_process(delta):
 		$Rotate_sound.stream_paused = true
 		$Right_booster.play("idle")
 		$Left_booster.play("idle")
-	rotate(rotation_dir * rotation_speed)
+	rotate(rotation_speed)
 	
 	move_and_slide(velocity)
 

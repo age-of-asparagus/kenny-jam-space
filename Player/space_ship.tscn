@@ -135,6 +135,6 @@ speed_scale = 25.0
 
 [node name="Rotate_sound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
-volume_db = -20.0
+volume_db = -30.0
 
 [connection signal="timeout" from="boost_timer" to="." method="_on_boost_timer_timeout"]
