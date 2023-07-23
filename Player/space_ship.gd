@@ -69,7 +69,8 @@ func _physics_process(delta):
 	move_and_slide(velocity)
 
 func die():
-	
+	$Move_sound.stream_paused = true
+	$Rotate_sound.stream_paused = true
 	visible = false
 		
 
