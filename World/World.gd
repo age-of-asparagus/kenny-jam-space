@@ -37,3 +37,20 @@ func generate_planets():
 				
 	# genreate the mini map and other stuff the HUD does once planets are created
 	$CanvasLayer/HUD.initialize_HUD()
+
+
+func _on_HUD_reset_game():
+	for planet in get_tree().get_nodes_in_group("planets"):
+		planet.queue_free()
+	Global.reset()
+	_ready()
+	$CanvasLayer/HUD._ready()
+	$space_ship._ready()
+	$space_ship.velocity = Vector2.ZERO
+	$space_ship.rotation = 0.0
+	$space_ship.rotation_speed = 0.0
+	$space_ship.set_process(true)
+	$space_ship.set_physics_process(true)
+	$space_ship.global_position = Vector2.ZERO
+	$space_ship.show()
+	$CanvasLayer/HUD._ready()

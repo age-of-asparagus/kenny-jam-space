@@ -25,12 +25,16 @@ var planets = []
 
 var proximity_object : Node2D
 
+signal reset_game
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	markers = {}
+	planets = []
 	fuel_bar.value = Global.max_fuel
 	stop_warning()
 	message_label.hide()
+	$RetryButton.hide()
 	
 	player_marker.position = minimap.rect_size / 2
 	map_scale = minimap.rect_size / (get_viewport_rect().size * zoom)
@@ -97,6 +101,7 @@ func initialize_HUD():
 		planet.connect("proximity_exited", self, "_on_Planet_proximity_exited")
 		planet.connect("colonized", self, "_on_Planet_colonized")
 		planet.connect("message", self, "on_Planet_message")
+		planet.connect("game_over", self, "on_Planet_game_over")
 		
 func _on_Planet_proximity(planet):
 	var player_node = get_node(player)
@@ -120,6 +125,9 @@ func _on_Planet_colonized(planet):
 	
 func on_Planet_message(message, time):
 	display_message(message, time)
+	
+func on_Planet_game_over():
+	game_over()
 
 func display_colonized():
 	$WarningContainer/WarningLabel.text = "PLANET COLONIZED"
@@ -151,4 +159,12 @@ func display_message(message: String, seconds: float):
 	if seconds > 0:
 		yield(get_tree().create_timer(seconds), "timeout")
 		message_label.hide()
+		
+func game_over():
+	$RetryButton.show()
 
+
+func _on_RetryButton_button_down():
+	$RetryButton.hide()
+	emit_signal("reset_game")
+	
