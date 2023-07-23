@@ -34,9 +34,9 @@ func _on_Planet_body_entered(body: PhysicsBody2D):
 			emit_signal("colonized", self)
 		else:
 			$Explosion.global_position = body.global_position
-			body.visible = false
 			body.set_process(false)
 			body.set_physics_process(false)
+			body.die()
 			$Explosion/AnimationPlayer.play("Explode")
 			game_over("Crashed")
 			

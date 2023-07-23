@@ -41,11 +41,7 @@ func _physics_process(delta):
 	else:
 		$Sprite/Fire.scale = Vector2(1.5,1.5)
 		$Sprite/Fire.play("idle")
-		$Move_sound.stream_paused = true
-		
-		
-	
-	
+		$Move_sound.stream_paused = true	
 	
 	
 	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
@@ -66,7 +62,9 @@ func _physics_process(delta):
 	
 	move_and_slide(velocity)
 
-
+func die():
+	visible = false
+		
 
 func _on_boost_timer_timeout():
 	boosting = false
