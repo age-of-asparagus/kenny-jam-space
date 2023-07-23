@@ -62,8 +62,10 @@ func _process(change):
 	# Update speed
 	var speed = player_node.velocity.length()
 	$Label.text = str(int(speed)) + " km/s"
-#	if speed < 40:
-#		stop_warning()
+	
+	# Update # planets colonized
+	var num_colonized = get_tree().get_nodes_in_group("colonized").size()
+	$VBoxContainer/MarginContainer3/HBoxContainer/Label3.text = str(num_colonized)
 	
 	# Update minimap
 	player_marker.rotation = player_node.rotation
