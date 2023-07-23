@@ -10,10 +10,12 @@ const PLANET_PATH = "res://Assets/kenney_planets/Planets/planet0"  # + #.png
 const NUM_PLANET_TEXTURES = 10
 var planet_textures = []
 
+var rng = RandomNumberGenerator.new()
 
 func _ready():
 	load_planet_textures()
 	generate_planets()
+	rng.randomize()
 	
 func load_planet_textures():
 	for i in range(NUM_PLANET_TEXTURES):
@@ -26,12 +28,12 @@ func generate_planets():
 #	var origin = Vector2(top_left, top_left)
 	for x in range(sectors):
 		for y in range(sectors):
-			if randf() < planet_density:
+			if rng.randf() < planet_density:
 				var planet : Planet = Planet.instance()
 				# a random location within the sector
 				planet.global_position = Vector2(
-					randi()%sector_size + x*sector_size + top_left,
-					randi()%sector_size + y*sector_size + top_left
+					rng.randi()%sector_size + x*sector_size + top_left,
+					rng.randi()%sector_size + y*sector_size + top_left
 				)
 				add_child(planet)
 				
