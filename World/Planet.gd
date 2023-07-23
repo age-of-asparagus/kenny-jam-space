@@ -33,13 +33,7 @@ func _on_Planet_body_entered(body: PhysicsBody2D):
 			colonized = true
 			$Satellites.visible = true
 			emit_signal("colonized", self)
-		else:
-			$Explosion.global_position = body.global_position
-			body.set_process(false)
-			body.set_physics_process(false)
-			body.die()
-			$Explosion/AnimationPlayer.play("Explode")
-			game_over("Crashed")
+
 			
 func game_over(reason : String):
 	emit_signal("message", "GAME OVER\nYOU CRASHED", -1)

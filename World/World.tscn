@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://World/World.gd" type="Script" id=1]
 [ext_resource path="res://World/Starfield.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Player/space_ship.tscn" type="PackedScene" id=3]
 [ext_resource path="res://HUD/HUD.tscn" type="PackedScene" id=4]
 [ext_resource path="res://World/Planet.tscn" type="PackedScene" id=5]
+[ext_resource path="res://World/bad_planet.tscn" type="PackedScene" id=6]
 
 [node name="Galaxy" type="Node2D"]
 script = ExtResource( 1 )
@@ -60,5 +61,7 @@ player = NodePath("../../space_ship")
 [node name="Planet" parent="." instance=ExtResource( 5 )]
 position = Vector2( 472, 272 )
 
-[connection signal="reset_game" from="CanvasLayer/HUD" to="." method="_on_HUD_reset_game"]
+[node name="bad_planet" parent="." instance=ExtResource( 6 )]
+position = Vector2( 110, 265 )
+
 [connection signal="proximity" from="Planet" to="." method="_on_Planet_proximity"]
