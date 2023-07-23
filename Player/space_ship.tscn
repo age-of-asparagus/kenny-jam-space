@@ -16,7 +16,7 @@ extents = Vector2( 30, 14 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
-"frames": [ ExtResource( 8 ), ExtResource( 12 ) ],
+"frames": [ ExtResource( 12 ), ExtResource( 8 ) ],
 "loop": true,
 "name": "boosting",
 "speed": 5.0
@@ -26,7 +26,7 @@ animations = [ {
 "name": "idle",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 11 ), ExtResource( 5 ) ],
+"frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
 "loop": true,
 "name": "moving",
 "speed": 5.0
@@ -35,7 +35,7 @@ animations = [ {
 [sub_resource type="Animation" id=2]
 length = 0.001
 tracks/0/type = "value"
-tracks/0/path = NodePath("AudioStreamPlayer:pitch_scale")
+tracks/0/path = NodePath("Move_sound:pitch_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -51,7 +51,7 @@ tracks/0/keys = {
 resource_name = "boost"
 length = 3.0
 tracks/0/type = "value"
-tracks/0/path = NodePath("AudioStreamPlayer:pitch_scale")
+tracks/0/path = NodePath("Move_sound:pitch_scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -106,7 +106,6 @@ animation = "idle"
 speed_scale = 5.0
 
 [node name="boost_timer" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [node name="Move_sound" type="AudioStreamPlayer" parent="."]
@@ -130,7 +129,7 @@ position = Vector2( 11, -16 )
 rotation = 4.71239
 scale = Vector2( 0.5, 0.5 )
 frames = SubResource( 6 )
-animation = "idle"
+animation = "boost"
 speed_scale = 25.0
 
 [node name="Rotate_sound" type="AudioStreamPlayer" parent="."]

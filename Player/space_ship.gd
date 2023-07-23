@@ -16,7 +16,7 @@ func _ready():
 	$Move_sound.stream_paused = true
 	$Rotate_sound.stream_paused = true
 func _physics_process(delta):
-	
+	get_tree().get_nodes_in_group("colonized")
 	
 	if Input.is_action_just_pressed("boost") and not boosting and Global.boosts_available > 0 and Global.fuel > 0:
 		$AnimationPlayer.play("boost")
@@ -45,6 +45,7 @@ func _physics_process(delta):
 		$Move_sound.stream_paused = true	
 	
 	
+	
 	var rotation_dir = Input.get_axis("rotate_left", "rotate_right")
 	
 	if rotation_dir > 0 and Global.fuel > 0:
@@ -68,6 +69,7 @@ func _physics_process(delta):
 	move_and_slide(velocity)
 
 func die():
+	
 	visible = false
 		
 
