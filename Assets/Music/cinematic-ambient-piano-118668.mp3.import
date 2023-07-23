@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/cinematic-ambient-piano-118668.mp3-619330aaf0462b69270efe66ab15081b.mp3str"
+
+[deps]
+
+source_file="res://Assets/Music/cinematic-ambient-piano-118668.mp3"
+dest_files=[ "res://.import/cinematic-ambient-piano-118668.mp3-619330aaf0462b69270efe66ab15081b.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

@@ -17,6 +17,7 @@ func _ready():
 	generate_planets()
 	rng.randomize()
 	$CanvasLayer/HUD.display_message("COLONIZE PLANETS!", 4)
+	$BackgroundMusic.play()
 	
 func load_planet_textures():
 	for i in range(NUM_PLANET_TEXTURES):
