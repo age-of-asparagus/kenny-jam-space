@@ -37,4 +37,8 @@ func _on_Planet_body_entered(body: PhysicsBody2D):
 			body.set_process(false)
 			body.set_physics_process(false)
 			$Explosion/AnimationPlayer.play("Explode")
-		
+			game_over("Crashed")
+			
+func game_over(reason : String):
+	pass
+	

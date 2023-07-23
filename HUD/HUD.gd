@@ -1,6 +1,5 @@
 extends Control
 
-
 export (NodePath) var player
 
 onready var fuel_bar = $VBoxContainer/MarginContainer/FuelProgress
@@ -28,6 +27,7 @@ var proximity_object : Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	fuel_bar.value = Global.max_fuel
+	stop_warning()
 	
 	player_marker.position = minimap.rect_size / 2
 	map_scale = minimap.rect_size / (get_viewport_rect().size * zoom)
@@ -36,8 +36,8 @@ func _process(change):
 	
 	# update fuel bar
 	fuel_bar.value = Global.fuel
-	for i in booster_bar.get_child_count():
-		var icon : TextureRect = booster_bar.get_child(i)
+	for i in booster_bar.get_child_count()-1:  # the first one is a label, so skip it
+		var icon : TextureRect = booster_bar.get_child(i+1)
 		icon.visible = (Global.boosts_available > i)
 		
 	# Update Minimap
@@ -130,4 +130,6 @@ func display_discovery():
 	$WarningContainer.modulate = Color("00ffff")
 	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = discovery_sound
 	warning_label_player.play("Flash")
-		
+	
+func display_message(message: String, seconds: float):
+	pass
