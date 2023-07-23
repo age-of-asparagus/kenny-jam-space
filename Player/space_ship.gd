@@ -13,7 +13,8 @@ export var rotation_speed = 0.05
 func _ready():
 	$Move_sound.playing = true
 	$Rotate_sound.playing = true
-
+	$Move_sound.stream_paused = true
+	$Rotate_sound.stream_paused = true
 func _physics_process(delta):
 	
 	
