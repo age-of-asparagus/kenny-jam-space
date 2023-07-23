@@ -16,6 +16,8 @@ export var danger_sound : AudioStream = preload("res://Assets/kenney_sci-fi-soun
 export var discovery_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/laserRetro_003.ogg")
 export var colonized_sound : AudioStream = preload("res://Assets/kenney_sci-fi-sounds/Audio/slime_001.ogg")
 
+onready var message_label = $MessageContainer/MessageLabel
+
 var zoom = 5
 var map_scale
 var markers = {}
@@ -28,6 +30,7 @@ var proximity_object : Node2D
 func _ready():
 	fuel_bar.value = Global.max_fuel
 	stop_warning()
+	message_label.hide()
 	
 	player_marker.position = minimap.rect_size / 2
 	map_scale = minimap.rect_size / (get_viewport_rect().size * zoom)
@@ -39,6 +42,10 @@ func _process(change):
 	for i in booster_bar.get_child_count()-1:  # the first one is a label, so skip it
 		var icon : TextureRect = booster_bar.get_child(i+1)
 		icon.visible = (Global.boosts_available > i)
+		
+	# out of fuel?
+	if Global.fuel <= 0:
+		display_message("GAME OVER\nYOU RAN OUT OF FUEL", -1)
 		
 	# Update Minimap
 	if !player:
@@ -89,6 +96,7 @@ func initialize_HUD():
 		planet.connect("proximity", self, "_on_Planet_proximity")
 		planet.connect("proximity_exited", self, "_on_Planet_proximity_exited")
 		planet.connect("colonized", self, "_on_Planet_colonized")
+		planet.connect("message", self, "on_Planet_message")
 		
 func _on_Planet_proximity(planet):
 	var player_node = get_node(player)
@@ -109,6 +117,9 @@ func _on_Planet_colonized(planet):
 	yield(get_tree().create_timer(1.0), "timeout")
 	stop_warning()
 	planet.add_to_group("colonized")
+	
+func on_Planet_message(message, time):
+	display_message(message, time)
 
 func display_colonized():
 	$WarningContainer/WarningLabel.text = "PLANET COLONIZED"
@@ -130,6 +141,14 @@ func display_discovery():
 	$WarningContainer.modulate = Color("00ffff")
 	$WarningContainer/WarningLabel/AudioStreamPlayer.stream = discovery_sound
 	warning_label_player.play("Flash")
+
 	
 func display_message(message: String, seconds: float):
-	pass
+	# second <= 0 means forever
+	
+	message_label.text = message
+	message_label.show()
+	if seconds > 0:
+		yield(get_tree().create_timer(seconds), "timeout")
+		message_label.hide()
+

@@ -11,6 +11,7 @@ signal too_fast
 signal proximity
 signal proximity_exited
 signal colonized
+signal message
 
 func _ready():
 	$Sprite.texture = mystery_planet
@@ -40,5 +41,5 @@ func _on_Planet_body_entered(body: PhysicsBody2D):
 			game_over("Crashed")
 			
 func game_over(reason : String):
-	pass
+	emit_signal("message", "GAME OVER\nYOU CRASHED", -1)
 	
