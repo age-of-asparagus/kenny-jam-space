@@ -134,6 +134,7 @@ func _on_Planet_colonized(planet):
 	planet.disconnect("proximity_exited", self, "_on_Planet_proximity_exited")
 	planet.disconnect("colonized", self, "_on_Planet_colonized")
 	display_colonized()
+	proximity_object = null
 	# wait a second before ending animation
 	yield(get_tree().create_timer(1.0), "timeout")
 	stop_warning()
@@ -153,6 +154,7 @@ func display_colonized():
 	#play for only 1 second
 	$WarningSound.stream_paused = true
 	$ColonizeSound.stream_paused = false
+	$DiscoverSound.stop()
 	yield(get_tree().create_timer(1.0), "timeout")
 	$ColonizeSound.stream_paused = true	
 
