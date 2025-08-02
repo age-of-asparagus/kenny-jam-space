@@ -60,8 +60,7 @@ func _process(change):
 	if Global.fuel <= 0:
 		display_message("GAME OVER\nYOU RAN OUT OF FUEL", -1)
 		game_over()
-		
-	# Update Minimap
+
 	if !player:
 		return
 	var player_node = get_node(player)
