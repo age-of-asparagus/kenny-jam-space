@@ -41,11 +41,11 @@ func _ready():
 	player_marker.position = minimap.rect_size / 2
 	map_scale = minimap.rect_size / (get_viewport_rect().size * zoom)
 	
-	$WarningSound.playing = true
-	$ColonizeSound.playing = true
+#	$WarningSound.playing = true
+#	$ColonizeSound.playing = true
 #	$DiscoverSound.playing = true  # Doesn't repeat
-	$WarningSound.stream_paused = true
-	$ColonizeSound.stream_paused = true
+#	$WarningSound.stream_paused = true
+#	$ColonizeSound.stream_paused = true
 #	$DiscoverSound.stream_paused = true
 
 func _process(change):
@@ -71,6 +71,7 @@ func _process(change):
 	# Update proximity warnings:
 	if proximity_object:
 		if player_node.velocity.length() > 40:
+#			$WarningSound.playing = true
 			display_warning()
 		else: 
 			display_discovery()
@@ -151,22 +152,26 @@ func display_colonized():
 	warning_label_player.play("Flash")  # Danger proximity
 	discovering = false
 	#play for only 1 second
-	$WarningSound.stream_paused = true
-	$ColonizeSound.stream_paused = false
+	$WarningSound.stop()
+	$ColonizeSound.play()
 	$DiscoverSound.stop()
 	yield(get_tree().create_timer(1.0), "timeout")
-	$ColonizeSound.stream_paused = true	
-
+	$ColonizeSound.stop()
+	
 func display_warning():
 	$WarningContainer/WarningLabel.text = "PROXIMITY ALERT\nTOO FAST"
 	$WarningContainer.modulate = Color("ff0000")
 	warning_label_player.play("Flash")  # Danger proximity
-	$WarningSound.stream_paused = false
+	$DiscoverSound.stop()
+#	$WarningSound.playing = true
+	if not $WarningSound.playing:
+		$WarningSound.play()
 	discovering = false
 	
 func stop_warning():
 	warning_label_player.play("RESET")
-	$WarningSound.stream_paused = true
+	$WarningSound.stop()
+	$DiscoverSound.stop()
 	discovering = false
 	
 func display_discovery():
@@ -174,8 +179,7 @@ func display_discovery():
 	$WarningContainer.modulate = Color("00ffff")
 	
 	warning_label_player.play("Flash")
-	$WarningSound.stream_paused = true
-	
+	$WarningSound.stop()
 	if not discovering:
 		$DiscoverSound.play()
 		discovering = true
